@@ -8,9 +8,6 @@ covid
 cowpy
 dataclasses
 DateTime
-node
-py-tgcalls
-git+https://github.com/pytgcalls/pytgcalls
 emoji
 fonttools
 geopy
