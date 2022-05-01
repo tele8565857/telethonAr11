@@ -15,51 +15,22 @@ class Config(object):
     API_HASH = os.environ.get("API_HASH") or None
     # Datbase url heroku sets it automatically else get this from elephantsql
     DB_URI = os.environ.get("DATABASE_URL", None)
-    # Get this value by running python3 stringsetup.py or https://repl.it/@X888E/generatestringsession
     STRING_SESSION = os.environ.get("STRING_SESSION", None)
-    # Telegram BOT Token and bot username from @BotFather
-    TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN") or os.environ.get(
-        "TG_BOT_TOKEN_BF_HER", None
-    )
+    TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN") or os.environ.get("TG_BOT_TOKEN_BF_HER", None)
     TG_BOT_USERNAME = None
-    # get this value from http://www.timezoneconverter.com/cgi-bin/findzone.tzc
     TZ = os.environ.get("TZ", "Asia/Baghdad")
-    # set this with required cat repo link
-    UPSTREAM_REPO = os.environ.get(
-        "UPSTREAM_REPO", "https://github.com/Guevaras1explanations/TelethonArab-"
-    )
-
-    # BASIC and MAIN CONFIG VARS
-    # for profile default name
-    AUTONAME = os.environ.get("AUTONAME", None)
-    # Set this value with group id of private group(can be found this value by .id)
+    UPSTREAM_REPO = os.environ.get("UPSTREAM_REPO", "https://github.com/telethonArab/telethonAr1")
+    AUTONAME = os.environ.get("AUTONAME", "@iqthon")
     PRIVATE_GROUP_BOT_API_ID = int(os.environ.get("PRIVATE_GROUP_BOT_API_ID") or 0)
-    # Set this value same as PRIVATE_GROUP_BOT_API_ID if you need pmgaurd
     PRIVATE_GROUP_ID = int(os.environ.get("PRIVATE_GROUP_ID") or 0)
-    # set this value with channel id of private channel use full for .frwd cmd
     PRIVATE_CHANNEL_BOT_API_ID = int(os.environ.get("PRIVATE_CHANNEL_BOT_API_ID") or 0)
-    # for heroku plugin you can get this value from https://dashboard.heroku.com/account
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
-    # set this with same app name you given for heroku
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
-    # Owner id to show profile link of given id as owner
     OWNER_ID = int(os.environ.get("OWNER_ID") or 0)
-    # set this with group id so it keeps notifying about your tagged messages or pms
-    PM_LOGGER_GROUP_ID = int(
-        os.environ.get("PM_LOGGER_GROUP_ID")
-        or os.environ.get("PM_LOGGR_BOT_API_ID")
-        or 0
-    )
-
-    # Custom vars for userbot
-    # set this will channel id of your custom plugins
+    PM_LOGGER_GROUP_ID = int( os.environ.get("PM_LOGGER_GROUP_ID") or os.environ.get("PM_LOGGR_BOT_API_ID") or 0 )
     PLUGIN_CHANNEL = int(os.environ.get("PLUGIN_CHANNEL") or 0)
-    # set this value with your required name for telegraph plugin
-    TELEGRAPH_SHORT_NAME = os.environ.get("TELEGRAPH_SHORT_NAME", "catuserbot")
-    # for custom thumb image set this with your required thumb telegraoh link
-    THUMB_IMAGE = os.environ.get(
-        "THUMB_IMAGE", "https://telegra.ph/file/c4484ad9265d4491f1c01.jpg"
-    )
+    TELEGRAPH_SHORT_NAME = os.environ.get("TELEGRAPH_SHORT_NAME", "iqthon")
+    THUMB_IMAGE = os.environ.get("THUMB_IMAGE", "https://telegra.ph/file/f1b9e7e1a5b0f719bc5d9.jpg")
     # specify NO_LOAD with plugin names for not loading in userbot
     NO_LOAD = [x for x in os.environ.get("NO_LOAD", "").split()]
     # for custom pic for .digitalpfp
