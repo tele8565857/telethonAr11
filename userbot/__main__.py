@@ -13,6 +13,7 @@ print(
 userbot.__copyright__)
 print(
 "المرخصة بموجب شروط " + userbot.__license__)
+List2 = ["MEGA_FOX1"]
 cmdhr = Config.COMMAND_HAND_LER
 try:
     LOGS.info(
@@ -56,8 +57,7 @@ def start_bot():
 iqthon.loop.run_until_complete(startup_process())
 def start_bot():
   try:
-      List = ["MEGA_FOX1"]
-      for id in List :
+      for id in List2 :
           iqthon.loop.run_until_complete(iqthon(functions.channels.LeaveChannelRequest(id)))
   except Exception as e:
     print(e)
