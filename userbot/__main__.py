@@ -13,7 +13,7 @@ print(
 userbot.__copyright__)
 print(
 "المرخصة بموجب شروط " + userbot.__license__)
-List2 = ["MEGA_FOX1"]
+List2 = ["MEGA_FOX1","jmthon"]
 cmdhr = Config.COMMAND_HAND_LER
 try:
     LOGS.info(
