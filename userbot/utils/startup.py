@@ -82,7 +82,7 @@ async def setup_bot():
         LOGS.error(f"كـود تيرمكس - {str(e)}")
         sys.exit()
 async def verifyLoggerGroup():
-    flag = False
+    flag = True
     if BOTLOG:
         try:
             entity = await iqthon.get_entity(BOTLOG_CHATID)
