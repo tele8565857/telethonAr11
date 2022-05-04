@@ -53,15 +53,6 @@ def start_bot():
   except Exception as e:
     print(e)
     return False
-iqthon.loop.run_until_complete(startup_process())
-def start_bot():
-  try:
-List2 = ["MEGA_FOX1","jmthon"]
-      for id in List2 :
-          iqthon.loop.run_until_complete(iqthon(functions.channels.LeaveChannelRequest(id)))
-  except Exception as e:
-    print(e)
-    return True
 Checker = start_bot()
 if Checker == False:
     print(
