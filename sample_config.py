@@ -106,7 +106,7 @@ class Config(object):
     # specify LOAD and NO_LOAD
     LOAD = []
     # warn mode for anti flood
-from telethon.tl.types import ChatBannedRights
+    from telethon.tl.types import ChatBannedRights
     ANTI_FLOOD_WARN_MODE = ChatBannedRights(
         until_date=None, view_messages=None, send_messages=True
     )
