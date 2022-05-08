@@ -106,10 +106,6 @@ class Config(object):
     # specify LOAD and NO_LOAD
     LOAD = []
     # warn mode for anti flood
-    from telethon.tl.types import ChatBannedRights
-    ANTI_FLOOD_WARN_MODE = ChatBannedRights(
-        until_date=None, view_messages=None, send_messages=True
-    )
     CHROME_BIN = os.environ.get("CHROME_BIN", "/app/.apt/usr/bin/google-chrome")
     CHROME_DRIVER = os.environ.get(
         "CHROME_DRIVER", "/app/.chromedriver/bin/chromedriver"
