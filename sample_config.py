@@ -1,4 +1,5 @@
 import os
+import telethon
 from typing import Set
 
 from telethon.tl.types import ChatBannedRights
