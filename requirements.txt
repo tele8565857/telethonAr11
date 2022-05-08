@@ -3,6 +3,7 @@ setuptools
 wheel
 aiofiles
 aiohttp
+akinator.py
 beautifulsoup4
 cairosvg
 cfscrape
@@ -13,7 +14,6 @@ cowpy
 cryptg
 csvfaker
 DateTime
-dataclasses
 fontTools
 python-dotenv
 emoji
@@ -72,3 +72,4 @@ wand
 wikipedia
 youtube_dl
 youtube-search-python
+yt_dlp
