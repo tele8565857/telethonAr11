@@ -8,6 +8,7 @@ colour
 covid
 cowpy
 dataclasses
+pyminizip
 DateTime
 emoji
 fonttools
