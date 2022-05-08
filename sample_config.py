@@ -99,7 +99,10 @@ class Config(object):
     GIT_REPO_NAME = os.environ.get("GIT_REPO_NAME", None)
     # Deepai value can get from https://deepai.org/
     DEEP_AI = os.environ.get("DEEP_AI", None)
-
+    from telethon.tl.types import ChatBannedRights
+    ANTI_FLOOD_WARN_MODE = ChatBannedRights(
+        until_date=None, view_messages=None, send_messages=True
+    )
     # DO NOT EDIT BELOW THIS LINE IF YOU DO NOT KNOW WHAT YOU ARE DOING
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
