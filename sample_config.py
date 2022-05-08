@@ -1,6 +1,6 @@
 import os
 from typing import Set
-from telethon.tl.types import ChatBannedRights
+
 
 class Config(object):
     LOGGER = True
@@ -17,7 +17,7 @@ class Config(object):
     TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN") or os.environ.get("TG_BOT_TOKEN_BF_HER", None)
     TG_BOT_USERNAME = None
     TZ = os.environ.get("TZ", "Asia/Baghdad")
-    UPSTREAM_REPO = os.environ.get("UPSTREAM_REPO", "https://github.com/telethonArab/telethonAr1")
+    UPSTREAM_REPO = os.environ.get("UPSTREAM_REPO", "https://github.com/telethonArab/telethonAr")
     AUTONAME = os.environ.get("AUTONAME", "@iqthon")
     PRIVATE_GROUP_BOT_API_ID = int(os.environ.get("PRIVATE_GROUP_BOT_API_ID") or 0)
     PRIVATE_GROUP_ID = int(os.environ.get("PRIVATE_GROUP_ID") or 0)
@@ -106,6 +106,7 @@ class Config(object):
     # specify LOAD and NO_LOAD
     LOAD = []
     # warn mode for anti flood
+from telethon.tl.types import ChatBannedRights
     ANTI_FLOOD_WARN_MODE = ChatBannedRights(
         until_date=None, view_messages=None, send_messages=True
     )
