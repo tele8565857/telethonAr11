@@ -196,10 +196,10 @@ async def startgmute(event):
         user = (await event.client(GetFullUserRequest(userid))).user
     except Exception:
         return await edit_or_reply(            event, "**♛ ⦙   غيـر قـادر عـلى جـلب مـعلومات الـشخص **"        )
-    if is_muted(userid, "كتم_مؤقت"):
+    if is_muted(userid, "akna"):
         return await edit_or_reply(            event,            f"**♛ ⦙   تـم كـتم الـمستـخدم بـنجاح ✅**",        )
     try:
-        mute(userid, "كتم_مؤقت")
+        mute(userid, "jahs")
     except Exception as e:
         await edit_or_reply(event, f"**خـطأ**\n`{e}`")
     else:
