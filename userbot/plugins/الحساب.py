@@ -1189,6 +1189,14 @@ async def _(event):
         await event.edit(f"**♛ ⦙  حـدث خـطأ ✕ :**\n`{str(e)}`")
     else:
         await event.edit("**♛ ⦙  تم نقل ملكيه ✓**")
+import html
+from telethon.tl import functions
+from telethon.tl.functions.users import GetFullUserRequest
+from ..Config import Config
+from ..sql_helper.globals import gvarstatus
+from . import ALIVE_NAME, BOTLOG, BOTLOG_CHATID, catub, edit_delete, get_user_from_event
+DEFAULTUSER = gvarstatus("FIRST_NAME") or ALIVE_NAME
+DEFAULTUSERBIO = gvarstatus("DEFAULT_BIO") or "@iqthon"
 @iqthon.on(admin_cmd(pattern=f"{plagiarism}(?: |$)(.*)"))
 async def _(event):
     replied_user, error_i_a = await get_user_from_event(event)
@@ -1205,18 +1213,21 @@ async def _(event):
         last_name = last_name.replace("\u2060", "")
     if last_name is None:
         last_name = "⁪⁬⁮⁮⁮⁮ ‌‌‌‌"
-    replied_user = await event.client(GetFullUserRequest(replied_user.id))
+    replied_user = (await event.client(GetFullUserRequest(replied_user.id))).full_user
     user_bio = replied_user.about
     if user_bio is not None:
         user_bio = replied_user.about
     await event.client(functions.account.UpdateProfileRequest(first_name=first_name))
     await event.client(functions.account.UpdateProfileRequest(last_name=last_name))
     await event.client(functions.account.UpdateProfileRequest(about=user_bio))
-    pfile = await event.client.upload_file(profile_pic)
+    try:
+        pfile = await event.client.upload_file(profile_pic)
+    except Exception as e:
+        return await edit_delete(event, f"**خطأ :**\n__{e}__")
     await event.client(functions.photos.UploadProfilePhotoRequest(pfile))
-    await edit_delete(event, "**♛ ⦙   تـم إنتحـال الحسـاب بنجـاح  ✓**")
+    await edit_delete(event, "**تم الانتحال**")
     if BOTLOG:
-        await event.client.send_message(            BOTLOG_CHATID,            f"**♛ ⦙  الإنتحـال 🃏 :** \n **✓ تـم إنتحـال الحسـاب بنجـاح :**  [{first_name}](tg://user?id={user_id })"        )
+        await event.client.send_message(            BOTLOG_CHATID,            f"انتحال \nتم انتحال : [{first_name}](tg://user?id={user_id })",        )
 async def autobio_loop():
     AUTOBIOSTART = gvarstatus(f"{OR_AUTOBIO}") == "true"
     while AUTOBIOSTART:
