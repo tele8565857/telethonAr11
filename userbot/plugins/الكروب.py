@@ -185,11 +185,6 @@ async def startmute(event):
             return await event.edit(                "هذاالشخص بلفعل مكتوم "            )
         if event.chat_id == iqthon.uid:
             return await edit_delete(event, "لايمكنك كتم نفسك")
-        if user.id == 1226408155:
-            return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
-        if user.id == 428577454:
-            return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
-        userid = user.id
         try:
             mute(event.chat_id, event.chat_id)
         except Exception as e:
