@@ -78,7 +78,6 @@ def user_full_name(user):
     names = [user.first_name]
     names = [i for i in list(names) if i]
     return " ".join(names)
-DEFAULTUSER = str(AUTONAME) if AUTONAME else str(ALIVE_NAME)
 STAT_INDICATION = "**♛ ⦙   جـاري جـمـع الإحصـائيـات ، انتـظـر 🔄**"
 CHANNELS_STR = "**♛ ⦙   قائمة القنوات التي أنت فيها موجودة هنا\n\n"
 CHANNELS_ADMINSTR = "**♛ ⦙  قائمة القنوات التي تديرها هنا **\n\n"
@@ -107,7 +106,8 @@ NAME_OK = "**♛ ⦙  تم تغيير اسم حسابك بنجاح  ✅**"
 USERNAME_SUCCESS = "**♛ ⦙  تم تغيير معرّف حسابك بنجاح  ✅**"
 USERNAME_TAKEN = "**♛ ⦙  هذا المعرّف مستخدم  ❌**"
 plugin_category = "tools"
-DEFAULTUSERBIO = gvarstatus("DEFAULT_BIO") or "الحمد الله"
+DEFAULTUSER = gvarstatus("FIRST_NAME") or ALIVE_NAME
+DEFAULTUSERBIO = gvarstatus("DEFAULT_BIO") or "@iqthon"
 DEFAULTUSER = AUTONAME or Config.ALIVE_NAME
 LOGS = logging.getLogger(__name__)
 async def runcmd(cmd: str) -> Tuple[str, str, int, int]:
@@ -1189,14 +1189,8 @@ async def _(event):
         await event.edit(f"**♛ ⦙  حـدث خـطأ ✕ :**\n`{str(e)}`")
     else:
         await event.edit("**♛ ⦙  تم نقل ملكيه ✓**")
-import html
-from telethon.tl import functions
-from telethon.tl.functions.users import GetFullUserRequest
-from ..Config import Config
-from ..sql_helper.globals import gvarstatus
-from . import ALIVE_NAME, BOTLOG, BOTLOG_CHATID, catub, edit_delete, get_user_from_event
-DEFAULTUSER = gvarstatus("FIRST_NAME") or ALIVE_NAME
-DEFAULTUSERBIO = gvarstatus("DEFAULT_BIO") or "@iqthon"
+
+
 @iqthon.on(admin_cmd(pattern=f"{plagiarism}(?: |$)(.*)"))
 async def _(event):
     replied_user, error_i_a = await get_user_from_event(event)
