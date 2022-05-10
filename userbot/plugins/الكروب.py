@@ -184,7 +184,8 @@ async def pyZip(e):
         os.remove(zip_)
         os.remove(dl_)
 
-
+MUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=True)
+UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 
 @iqthon.on(admin_cmd(pattern=f"{MUTE}(?:\s|$)([\s\S]*)"))
 async def startmute(event):
