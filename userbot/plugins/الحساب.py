@@ -1251,31 +1251,39 @@ async def _(event):
     if BOTLOG:
         await event.client.send_message(            BOTLOG_CHATID, f"♛ ⦙   **الأعـادة ♲ :**\n**♛ ⦙   تـم إعـادة ضبـط حسـابك إلـى وضعـه الطبيـعي بـنجاح ✓**"        )
 
+
 async def fetch_info(replied_user, event):
-    replied_user_profile_photos = await event.client(        GetUserPhotosRequest(            user_id=replied_user.user.id, offset=42, max_id=0, limit=80        )    )
-    replied_user_profile_photos_count = "`لم يقم المستخدم بتعيين صورة الملف الشخصي`"
+    FullUser = (await event.client(GetFullUserRequest(replied_user.id))).full_user
+    replied_user_profile_photos = await event.client(        GetUserPhotosRequest(user_id=replied_user.id, offset=42, max_id=0, limit=80)    )
+    replied_user_profile_photos_count = "لاتوجد صوره"
+    dc_id = "لايوجد ايدي"
     try:
         replied_user_profile_photos_count = replied_user_profile_photos.count
+        dc_id = replied_user.photo.dc_id
     except AttributeError:
         pass
-    user_id = replied_user.user.id
-    first_name = replied_user.user.first_name
-    last_name = replied_user.user.last_name
-    try:
-        dc_id, location = get_input_location(replied_user.profile_photo)
-    except Exception:
-        dc_id = "`تعذر جلب معرف DC`"
-    common_chat = replied_user.common_chats_count
-    username = replied_user.user.username
-    user_bio = replied_user.about
-    is_bot = replied_user.user.bot
-    restricted = replied_user.user.restricted
-    verified = replied_user.user.verified
-    photo = await event.client.download_profile_photo(        user_id,        Config.TMP_DOWNLOAD_DIRECTORY + str(user_id) + ".jpg",        download_big=True    )
-    first_name = (        first_name.replace("\u2060", "")        if first_name        else ("`هذا المستخدم ليس له اسم`")    )
-    last_name = last_name.replace("\u2060", "") if last_name else (" ")
-    username = "@{}".format(username) if username else ("`هذا الشخص لايوجد لديه معرف`")
-    user_bio = "`هذا الشخص لايوجد لديه نــبــذة`" if not user_bio else user_bio
+    user_id = replied_user.id
+    first_name = replied_user.first_name
+    full_name = FullUser.private_forward_name
+    common_chat = FullUser.common_chats_count
+    username = replied_user.username
+    user_bio = FullUser.about
+    is_bot = replied_user.bot
+    restricted = replied_user.restricted
+    verified = replied_user.verified
+    photo = await event.client.download_profile_photo(
+        user_id,
+        Config.TMP_DOWNLOAD_DIRECTORY + str(user_id) + ".jpg",
+        download_big=True,
+    )
+    first_name = (
+        first_name.replace("\u2060", "")
+        if first_name
+        else ("ليس لديه اسم")
+    )
+    full_name = full_name or first_name
+    username = "@{}".format(username) if username else ("ليس لديه معرف")
+    user_bio = "لايوجد نبذه" if not user_bio else user_bio
     caption = "<b>𓍹ⵧⵧⵧⵧⵧⵧⵧⵧ⁦⁦ⵧⵧⵧⵧⵧⵧⵧⵧ𓍻</b>\n"
     caption += f"<b>• ⚜️ | الاســم  :  </b> {first_name} {last_name}\n"
     caption += f"<b>• ⚜️ | الــمــ؏ــࢪف  : </b> {username}\n"
@@ -1285,6 +1293,9 @@ async def fetch_info(replied_user, event):
     caption += f' <a href="tg://user?id={user_id}">{first_name}{last_name}</a> \n'
     caption += "<b>𓍹ⵧⵧⵧⵧⵧⵧⵧⵧ⁦⁦ⵧⵧⵧⵧⵧⵧⵧⵧ𓍻</b>\n"
     return photo, caption
+
+
+
 async def autoname_loop():
     AUTONAMESTART = gvarstatus(f"{OR_NAMEAUTO}") == "true"
     while AUTONAMESTART:
@@ -1360,12 +1371,11 @@ async def who(event):
     replied_user, reason = await get_user_from_event(event)
     if not replied_user:
         return
-    cat = await edit_or_reply(event, "**• ⚜️ | جـاري جـلب ايـدي المسـتخدم  🆔**")
-    replied_user = await event.client(GetFullUserRequest(replied_user.id))
+    cat = await edit_or_reply(event, " جاري جلب معلومات الشخص ....")
     try:
         photo, caption = await fetch_info(replied_user, event)
     except AttributeError:
-        return await edit_or_reply(cat, "**• ⚜️ | تعذر جلب معلومات هذا المستخدم.**")
+        return await edit_or_reply(cat, "تعذر جلب المعلومات")
     message_id_to_reply = await reply_id(event)
     try:
         await event.client.send_file(
@@ -1375,7 +1385,8 @@ async def who(event):
             link_preview=False,
             force_document=False,
             reply_to=message_id_to_reply,
-            parse_mode="html"        )
+            parse_mode="html",
+        )
         if not photo.startswith("http"):
             os.remove(photo)
         await cat.delete()
@@ -2283,34 +2294,7 @@ async def memes(mafia):
     for files in (mafiasticker, meme_file):
         if files and os.path.exists(files):
             os.remove(files)
-@iqthon.on(admin_cmd(pattern="انمي_تلقائي ?(.*)"))
-async def autopic(event):
-    while True:
-        piclink = random.randint(0, len(TELEGRAPH_MEDIA_LINKS) - 1)
-        AUTOPP = TELEGRAPH_MEDIA_LINKS[piclink]
-        downloaded_file_name = "./DOWNLOADS/original_pic.png"
-        downloader = SmartDL(AUTOPP, downloaded_file_name, progress_bar=True)
-        downloader.start(blocking=False)
-        photo = "photo_pfp.png"
-        while not downloader.isFinished():
-            pass
 
-        shutil.copy(downloaded_file_name, photo)
-        Image.open(photo)
-        current_time = datetime.now().strftime(            "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n                                                   Time: %I:%M:%S \n                                                   Date: %d/%m/%y "        )
-        img = Image.open(photo)
-        drawn_text = ImageDraw.Draw(img)
-        fnt = ImageFont.truetype(FONT_FILE_TO_USE, 30)
-        drawn_text.text((300, 450), current_time, font=fnt, fill=(255, 255, 255))
-        img.save(photo)
-        file = await event.client.upload_file(photo)  
-        try:
-            await event.client(                functions.photos.UploadProfilePhotoRequest(file)  )
-            os.remove(photo)
-
-            await asyncio.sleep(60)
-        except:
-            return
 @iqthon.on(admin_cmd(pattern="ايقاف ([\s\S]*)"))
 async def _(event):  # sourcery no-metrics
     input_str = event.pattern_match.group(1)
