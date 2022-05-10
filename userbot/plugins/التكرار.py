@@ -9,7 +9,7 @@ from userbot import iqthon
 from ..core.managers import edit_delete, edit_or_reply
 from ..helpers.tools import media_type
 from ..helpers.utils import _catutils
-from ..sql_helper.globals import addgvar, gvarstatus
+from ..sql_helper.globals import addgvar, gvarstatus , delgvar
 from . import BOTLOG, BOTLOG_CHATID
 plugin_category = "extra"
 MUQT = gvarstatus("OR_MUQT") or "مؤقت"
