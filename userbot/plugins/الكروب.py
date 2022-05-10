@@ -174,60 +174,74 @@ async def pyZip(e):
     finally:
         os.remove(zip_)
         os.remove(dl_)
+
+
+
 @iqthon.on(admin_cmd(pattern=f"{MUTE}(?:\s|$)([\s\S]*)"))
-async def startgmute(event):
+async def startmute(event):
     if event.is_private:
-        await event.edit("**♛ ⦙   جاري الكتم**")
-        await asyncio.sleep(2)
-        userid = event.chat_id
-        reason = event.pattern_match.group(1)
-    else:
-        user, reason = await get_user_from_event(event)
-        if not user:
-            return
-        if user.id == iqthon.uid:
-            return await edit_or_reply(event, "**♛ ⦙   لا يـمكنك كتم نـفسك**")
+        replied_user = await event.client.get_entity(event.chat_id)
+        if is_muted(event.chat_id, event.chat_id):
+            return await event.edit(                "هذاالشخص بلفعل مكتوم "            )
+        if event.chat_id == iqthon.uid:
+            return await edit_delete(event, "لايمكنك كتم نفسك")
         if user.id == 1226408155:
             return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
         if user.id == 428577454:
             return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
         userid = user.id
-    try:
-        user = (await event.client(GetFullUserRequest(userid))).user
-    except Exception:
-        return await edit_or_reply(            event, "**♛ ⦙   غيـر قـادر عـلى جـلب مـعلومات الـشخص **"        )
-    if is_muted(userid, "akna"):
-        return await edit_or_reply(            event,            f"**♛ ⦙   تـم كـتم الـمستـخدم بـنجاح ✅**",        )
-    try:
-        mute(userid, "jahs")
-    except Exception as e:
-        await edit_or_reply(event, f"**خـطأ**\n`{e}`")
+        try:
+            mute(event.chat_id, event.chat_id)
+        except Exception as e:
+            await event.edit(f"**خطأ :**\n`{e}`")
+        else:
+            await event.edit("تم كتم الشخص")
+        if BOTLOG:
+            await event.client.send_message(                BOTLOG_CHATID,                "كتم وقتي \n"                f"**الشخص :** [{replied_user.first_name}](tg://user?id={event.chat_id})\n",            )
     else:
+        chat = await event.get_chat()
+        admin = chat.admin_rights
+        creator = chat.creator
+        if not admin and not creator:
+            return await edit_or_reply(                event, "عذراليس لديك صلاحيه ادمن"            )
+        user, reason = await get_user_from_event(event)
+        if not user:
+            return
+        if user.id == iqthon.uid:
+            return await edit_or_reply(event, "عذرا لايمكنك كتم نفسك")
+        if user.id == 1226408155:
+            return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
+        if user.id == 428577454:
+            return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
+        userid = user.id
+        if is_muted(user.id, event.chat_id):
+            return await edit_or_reply(                event, "هذاالشخص بلفعل مكتوم"            )
+        result = await event.client.get_permissions(event.chat_id, user.id)
+        try:
+            if result.participant.banned_rights.send_messages:
+                return await edit_or_reply(                    event,                    "هذا الشخص بلفعل مكتوم",                )
+        except AttributeError:
+            pass
+        except Exception as e:
+            return await edit_or_reply(event, f"**خطأ : **`{e}`")
+        try:
+            await event.client(EditBannedRequest(event.chat_id, user.id, MUTE_RIGHTS))
+        except UserAdminInvalidError:
+            if "admin_rights" in vars(chat) and vars(chat)["admin_rights"] is not None:
+                if chat.admin_rights.delete_messages is not True:
+                    return await edit_or_reply(                        event,                        "عذرا لايمكنك كتمه لاتوجد لديك صلاحيات ادمن",                    )
+            elif "creator" not in vars(chat):
+                return await edit_or_reply(                    event, "عذرا لايمكنك كتمه لاتوجد لديك صلاحيات ادمن"                )
+            mute(user.id, event.chat_id)
+        except Exception as e:
+            return await edit_or_reply(event, f"**خطأ : **`{e}`")
         if reason:
-            await edit_or_reply(
-                event,
-                f"**♛ ⦙   تـم كـتم الـمستـخدم بـنجاح ✅**",
-            )
+            await edit_or_reply(                event,                f"{_format.mentionuser(user.first_name ,user.id)} هذا الشخص مكتوم {get_display_name(await event.get_chat())}`\n"                f"السبب : {reason}",            )
         else:
-            await edit_or_reply(
-                event,
-                f"**♛ ⦙   تـم كـتم الـمستـخدم بـنجاح ✅**",
-            )
-    if BOTLOG:
-        reply = await event.get_reply_message()
-        if reason:
-            await event.client.send_message(
-                BOTLOG_CHATID,
-                f"**♛ ⦙   الـمستخدم** {_format.mentionuser(user.first_name ,user.id)}\n **♛ ⦙   تـم كتمه بنـجاح**\n **♛ ⦙   الدردشـة** {event.chat.title}\n"
-                f"**♛ ⦙   السـبب:** {reason}",
-            )
-        else:
-            await event.client.send_message(
-                BOTLOG_CHATID,
-                f"**♛ ⦙   الـمستخدم** {_format.mentionuser(user.first_name ,user.id)} \n**♛ ⦙   تـم كتمه بنـجاح**",
-            )
-        if reply:
-            await reply.forward_to(BOTLOG_CHATID)
+            await edit_or_reply(                event,                f"{_format.mentionuser(user.first_name ,user.id)} هذا الشخص مكتوم {get_display_name(await event.get_chat())}`\n",            )
+        if BOTLOG:
+            await event.client.send_message(                BOTLOG_CHATID,                "كتم \n"                f"**الشخص :** [{user.first_name}](tg://user?id={user.id})\n"                f"**المحادثه :** {get_display_name(await event.get_chat())}(`{event.chat_id}`)",            )
+
 
 @iqthon.on(admin_cmd(pattern=f"{UNMUTE}(?:\s|$)([\s\S]*)"))
 async def endgmute(event):
