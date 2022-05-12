@@ -52,7 +52,7 @@ from telethon.tl.functions.contacts import UnblockRequest
 from telethon import client, events
 ALIVE = gvarstatus("OR_ALIVE") or "(فحص|السورس)"
 UPDATE = gvarstatus("OR_UPDATE") or "(اعاده تشغيل|تحديث)"
-ORDERS = gvarstatus("OR_ORDERS") or "(اوامري|أوامري|م)"
+ORDERS = gvarstatus("OR_ORDERS") or "(الاوامر|ألاوامر|اوامري|أوامري|م)"
 IQTHONPC = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/e7b3ea8dc56ac781d756c.mp4"
 LOGS = logging.getLogger(os.path.basename(__name__))
 LOGS1 = logging.getLogger(__name__)
@@ -1796,7 +1796,7 @@ if Config.TG_BOT_USERNAME is not None and tgbot is not None:
         query = iqthon.text
         await bot.get_me()
         
-        if query.startswith("(الاوامر|الأوامر)") and iqthon.query.user_id == bot.uid:
+        if query.startswith("(صيانه|صيانه)") and iqthon.query.user_id == bot.uid:
             try:
                 buttons = [[Button.inline("اوامر السورس", data="order1"), Button.inline("اوامر الحساب", data="ord1hs"),],[Button.inline("اوامر الكروب", data="ord1G"), Button.inline("اوامر الالعاب", data="ord1pl"),],[Button.inline("اوامر الصيغ", data="ordsag1"), Button.inline("اوامر الاغاني", data="ordSONG"),], [Button.inline("اسم وقتي", data="order13"), Button.inline("اوامر الاعلانات", data="ordahln1"),],[Button.inline("اوامر التسليه", data="order14"),],[Button.inline("الفارات", data="ordvars"),]]
                 result = builder.article(title="iqthon",text=help2,buttons=buttons,link_preview=False)
@@ -1805,7 +1805,7 @@ if Config.TG_BOT_USERNAME is not None and tgbot is not None:
                 await iqthon.send_message( "يجب تفعيل الاونلاين من بوت فاذر اولا " )
            
            
-@bot.on(admin_cmd(outgoing=True, pattern="(الاوامر|الأوامر)"))
+@bot.on(admin_cmd(outgoing=True, pattern="(صيانه|صيانه)"))
 async def repoiqthon(iqthon):
     if iqthon.fwd_from:
         return
