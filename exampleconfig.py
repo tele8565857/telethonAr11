@@ -2,7 +2,6 @@ from sample_config import Config
 
 
 class Development(Config):
-# ملاحضه تمسح الكلام العربي وتضع ببدالة الكود
     APP_ID = 6
     API_HASH = "الايبي هاش"
     ALIVE_NAME = "ضع اسمك"
@@ -14,4 +13,6 @@ class Development(Config):
     COMMAND_HAND_LER = "."
     SUDO_COMMAND_HAND_LER = "."
     TZ = "Asia/Baghdad"
+
 # تليثون العرب - @IQTHON
+# ملاحضه تمسح الكلام العربي وتضع ببدالة الكود
