@@ -12,5 +12,4 @@ class Development(Config):
     SUDO_COMMAND_HAND_LER = "."
     TZ = "Asia/Baghdad"
 
-# تليثون العرب - @IQTHON
-# ملاحضه تمسح الكلام العربي وتضع ببدالة الكود 
+# تليثون العرب - @IQTHON 
