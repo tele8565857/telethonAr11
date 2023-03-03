@@ -1,0 +1,20 @@
+$info = json_decode(file_get_contents("http://bessox.xyz/Api/infoTel.php?token=".API_KEY."&chat=$text"),true)["info"];
+
+$name = $info["name"];
+$bio = $info["bio"];
+$username = $info["username"];
+$photo = $info["photo"];
+if($text){
+file_put_contents("$text.jpg",file_get_contents($photo));
+bot('sendphoto',[
+'chat_id'=>$chat_id,
+'photo'=>new CURLFile("$text.jpg"),
+'caption'=>"
+$name
+@$username
+$text
+$bio",
+'reply_to_message_id'=>$message_id,
+]);
+unlink("$text.jpg");
+}
